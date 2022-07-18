@@ -1,0 +1,51 @@
+server {
+    listen       ${NGINX_PORT};
+    listen       [::]:${NGINX_PORT};
+    server_name  localhost ${NGINX_HOST};
+
+    auth_basic           "Entering Restricted Area";
+    auth_basic_user_file /usr/share/nginx/html/htpasswd;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    error_page 404 /404.html;
+        location = /40x.html {
+            root   /usr/share/nginx/html;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
+
+
+server {
+    listen       ${NGINX_SSL_PORT} ssl;
+    listen       [::]:${NGINX_SSL_PORT} ssl;
+    server_name  localhost ${NGINX_HOST};
+
+    ssl_certificate         /etc/nginx/certs/fullchain.pem;
+    ssl_certificate_key     /etc/nginx/certs/privkey.pem;
+
+    auth_basic           "Entering Restricted Area";
+    auth_basic_user_file /usr/share/nginx/html/htpasswd;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    error_page 404 /404.html;
+        location = /40x.html {
+            root   /usr/share/nginx/html;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
